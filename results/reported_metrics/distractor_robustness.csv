@@ -1,0 +1,13 @@
+source,distractor_level,method,next_action_accuracy,support_rate,evidence_use_error_rate,action_validity_rate,unit
+Table 15,0,Standard RAG,55.6,70.2,18.7,72.8,percent
+Table 15,0,State-conditioned RAG,72.3,86.8,7.3,87.9,percent
+Table 15,0,Full Method – Progress/Action,76.5,91.6,4.5,94.1,percent
+Table 15,50,Standard RAG,51.2,65.4,25.6,68.1,percent
+Table 15,50,State-conditioned RAG,70.4,84.5,9.8,86.2,percent
+Table 15,50,Full Method – Progress/Action,75.1,90.3,5.9,93.2,percent
+Table 15,100,Standard RAG,46.5,59.8,33.9,63.7,percent
+Table 15,100,State-conditioned RAG,67.8,81.3,13.6,84.4,percent
+Table 15,100,Full Method – Progress/Action,73.6,88.5,7.8,92.1,percent
+Table 15,200,Standard RAG,39.7,51.6,46.8,57.9,percent
+Table 15,200,State-conditioned RAG,63.5,76.9,19.7,81.2,percent
+Table 15,200,Full Method – Progress/Action,70.8,84.9,11.6,89.7,percent

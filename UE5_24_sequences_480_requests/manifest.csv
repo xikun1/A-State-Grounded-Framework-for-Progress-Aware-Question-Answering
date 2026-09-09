@@ -1,0 +1,25 @@
+sequence_id,task_family,scene_id,request_count,first_timestamp,last_timestamp,task_step_count,completed
+ue5_seq_001,Windlass,ancient_physics_hall_windlass,18,2026-02-01T08:11:00Z,2026-02-01T08:22:46Z,6,true
+ue5_seq_002,Windlass,ancient_physics_hall_windlass,20,2026-02-02T08:22:00Z,2026-02-02T08:34:13Z,6,true
+ue5_seq_003,Windlass,ancient_physics_hall_windlass,22,2026-02-03T08:33:00Z,2026-02-03T08:46:52Z,6,true
+ue5_seq_004,Windlass,ancient_physics_hall_windlass,19,2026-02-04T08:44:00Z,2026-02-04T08:55:10Z,6,true
+ue5_seq_005,Waterwheel,ancient_physics_hall_waterwheel,21,2026-02-05T08:55:00Z,2026-02-05T09:10:26Z,6,true
+ue5_seq_006,Waterwheel,ancient_physics_hall_waterwheel,20,2026-02-06T09:06:00Z,2026-02-06T09:18:22Z,6,true
+ue5_seq_007,Waterwheel,ancient_physics_hall_waterwheel,17,2026-02-07T09:17:00Z,2026-02-07T09:26:54Z,6,true
+ue5_seq_008,Waterwheel,ancient_physics_hall_waterwheel,23,2026-02-08T09:28:00Z,2026-02-08T09:44:19Z,6,true
+ue5_seq_009,Chime bells,ancient_physics_hall_chime_bells,18,2026-02-09T09:39:00Z,2026-02-09T09:51:45Z,6,true
+ue5_seq_010,Chime bells,ancient_physics_hall_chime_bells,22,2026-02-10T09:50:00Z,2026-02-10T10:00:49Z,6,true
+ue5_seq_011,Chime bells,ancient_physics_hall_chime_bells,20,2026-02-11T10:01:00Z,2026-02-11T10:15:04Z,6,true
+ue5_seq_012,Chime bells,ancient_physics_hall_chime_bells,20,2026-02-12T10:12:00Z,2026-02-12T10:26:48Z,6,true
+ue5_seq_013,Sundial,ancient_observatory_sundial,19,2026-02-13T10:23:00Z,2026-02-13T10:34:07Z,5,true
+ue5_seq_014,Sundial,ancient_observatory_sundial,21,2026-02-14T10:34:00Z,2026-02-14T10:47:08Z,5,true
+ue5_seq_015,Sundial,ancient_observatory_sundial,24,2026-02-15T10:45:00Z,2026-02-15T10:59:28Z,5,true
+ue5_seq_016,Sundial,ancient_observatory_sundial,16,2026-02-16T10:56:00Z,2026-02-16T11:04:59Z,5,true
+ue5_seq_017,Compass,ancient_navigation_gallery_compass,22,2026-02-17T11:07:00Z,2026-02-17T11:21:36Z,4,true
+ue5_seq_018,Compass,ancient_navigation_gallery_compass,18,2026-02-18T11:18:00Z,2026-02-18T11:29:41Z,4,true
+ue5_seq_019,Compass,ancient_navigation_gallery_compass,20,2026-02-19T11:29:00Z,2026-02-19T11:43:25Z,4,true
+ue5_seq_020,Compass,ancient_navigation_gallery_compass,20,2026-02-20T11:40:00Z,2026-02-20T11:51:20Z,4,true
+ue5_seq_021,Friction heating,ancient_craft_workshop_friction,21,2026-02-21T11:51:00Z,2026-02-21T12:03:39Z,5,true
+ue5_seq_022,Friction heating,ancient_craft_workshop_friction,19,2026-02-22T12:02:00Z,2026-02-22T12:13:58Z,5,true
+ue5_seq_023,Friction heating,ancient_craft_workshop_friction,23,2026-02-23T12:13:00Z,2026-02-23T12:30:17Z,5,true
+ue5_seq_024,Friction heating,ancient_craft_workshop_friction,17,2026-02-24T12:24:00Z,2026-02-24T12:33:09Z,5,true

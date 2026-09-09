@@ -1,0 +1,205 @@
+{
+  "task_id": "task_chime_bells",
+  "goal": "Complete the chime-bell observation and connect striking, vibration, and sound.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_bell_frame",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_bell",
+        "inspect_bell_frame"
+      ],
+      "acceptable_next_actions": [
+        "inspect_bell_frame"
+      ],
+      "preconditions": {
+        "inspect_bell": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_bell_frame": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_bell_frame_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_select_bell",
+      "predecessors": [
+        "step_01_inspect_bell_frame"
+      ],
+      "allowed_actions": [
+        "compare_bells",
+        "select_bell"
+      ],
+      "acceptable_next_actions": [
+        "select_bell"
+      ],
+      "preconditions": {
+        "compare_bells": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "select_bell": {
+          "path": "state.inspect_bell_frame_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.select_bell_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_position_striker",
+      "predecessors": [
+        "step_02_select_bell"
+      ],
+      "allowed_actions": [
+        "inspect_striker",
+        "inspect_bell",
+        "position_striker"
+      ],
+      "acceptable_next_actions": [
+        "position_striker"
+      ],
+      "preconditions": {
+        "inspect_striker": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_bell": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "position_striker": {
+          "path": "state.select_bell_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.position_striker_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_strike_bell",
+      "predecessors": [
+        "step_03_position_striker"
+      ],
+      "allowed_actions": [
+        "check_striker_position",
+        "inspect_bell",
+        "strike_bell"
+      ],
+      "acceptable_next_actions": [
+        "strike_bell"
+      ],
+      "preconditions": {
+        "check_striker_position": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_bell": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "strike_bell": {
+          "path": "state.position_striker_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.strike_bell_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_04"
+      ]
+    },
+    {
+      "node_id": "step_05_observe_vibration",
+      "predecessors": [
+        "step_04_strike_bell"
+      ],
+      "allowed_actions": [
+        "listen_to_bell",
+        "inspect_bell",
+        "observe_vibration"
+      ],
+      "acceptable_next_actions": [
+        "observe_vibration"
+      ],
+      "preconditions": {
+        "listen_to_bell": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_bell": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_vibration": {
+          "path": "state.strike_bell_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_vibration_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_05"
+      ]
+    },
+    {
+      "node_id": "step_06_complete_observation",
+      "predecessors": [
+        "step_05_observe_vibration"
+      ],
+      "allowed_actions": [
+        "review_acoustics",
+        "complete_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_observation"
+      ],
+      "preconditions": {
+        "review_acoustics": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_observation": {
+          "path": "state.observe_vibration_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "chime_bell_acoustics_01",
+        "chime_bells_task_rule_06"
+      ]
+    }
+  ]
+}

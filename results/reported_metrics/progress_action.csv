@@ -1,0 +1,63 @@
+source,scope,method,progress_stage,metric,value,unit,n_requests,n_valid_actions
+Table 6,overall,LLM-only,all,current_step_accuracy,60.8,percent,,
+Table 6,overall,LLM-only,all,progress_status_macro_f1,57.6,percent,,
+Table 6,overall,LLM-only,all,remaining_step_f1,55.3,percent,,
+Table 6,overall,LLM-only,all,next_action_accuracy,48.9,percent,,
+Table 6,overall,LLM-only,all,action_validity_rate,65.7,percent,,
+Table 6,overall,LLM-only,all,illegal_action_rate,34.3,percent,,
+Table 6,overall,Standard RAG,all,current_step_accuracy,66.4,percent,,
+Table 6,overall,Standard RAG,all,progress_status_macro_f1,62.9,percent,,
+Table 6,overall,Standard RAG,all,remaining_step_f1,61.7,percent,,
+Table 6,overall,Standard RAG,all,next_action_accuracy,55.6,percent,,
+Table 6,overall,Standard RAG,all,action_validity_rate,72.8,percent,,
+Table 6,overall,Standard RAG,all,illegal_action_rate,27.2,percent,,
+Table 6,overall,State-only,all,current_step_accuracy,76.8,percent,,
+Table 6,overall,State-only,all,progress_status_macro_f1,74.9,percent,,
+Table 6,overall,State-only,all,remaining_step_f1,72.8,percent,,
+Table 6,overall,State-only,all,next_action_accuracy,64.7,percent,,
+Table 6,overall,State-only,all,action_validity_rate,83.8,percent,,
+Table 6,overall,State-only,all,illegal_action_rate,16.2,percent,,
+Table 6,overall,State-conditioned RAG,all,current_step_accuracy,81.7,percent,,
+Table 6,overall,State-conditioned RAG,all,progress_status_macro_f1,79.4,percent,,
+Table 6,overall,State-conditioned RAG,all,remaining_step_f1,77.9,percent,,
+Table 6,overall,State-conditioned RAG,all,next_action_accuracy,72.3,percent,,
+Table 6,overall,State-conditioned RAG,all,action_validity_rate,87.9,percent,,
+Table 6,overall,State-conditioned RAG,all,illegal_action_rate,12.1,percent,,
+Table 6,overall,Full Method – Progress/Action,all,current_step_accuracy,84.2,percent,,
+Table 6,overall,Full Method – Progress/Action,all,progress_status_macro_f1,82.1,percent,,
+Table 6,overall,Full Method – Progress/Action,all,remaining_step_f1,80.6,percent,,
+Table 6,overall,Full Method – Progress/Action,all,next_action_accuracy,76.5,percent,,
+Table 6,overall,Full Method – Progress/Action,all,action_validity_rate,94.1,percent,,
+Table 6,overall,Full Method – Progress/Action,all,illegal_action_rate,5.9,percent,,
+Table 7,external comparison,Standard RAG,all,next_action_accuracy,55.6,percent,,
+Table 7,external comparison,Standard RAG,all,action_validity_rate,72.8,percent,,
+Table 7,external comparison,Standard RAG,all,illegal_action_rate,27.2,percent,,
+Table 7,external comparison,Standard RAG,all,precondition_order_violation_rate,21.4,percent,,
+Table 7,external comparison,ProgPrompt,all,next_action_accuracy,72.8,percent,,
+Table 7,external comparison,ProgPrompt,all,action_validity_rate,87.6,percent,,
+Table 7,external comparison,ProgPrompt,all,illegal_action_rate,12.4,percent,,
+Table 7,external comparison,ProgPrompt,all,precondition_order_violation_rate,10.7,percent,,
+Table 7,external comparison,ExRAP,all,next_action_accuracy,71.9,percent,,
+Table 7,external comparison,ExRAP,all,action_validity_rate,90.8,percent,,
+Table 7,external comparison,ExRAP,all,illegal_action_rate,9.2,percent,,
+Table 7,external comparison,ExRAP,all,precondition_order_violation_rate,7.9,percent,,
+Table 7,external comparison,Full Method – Progress/Action,all,next_action_accuracy,76.5,percent,,
+Table 7,external comparison,Full Method – Progress/Action,all,action_validity_rate,94.1,percent,,
+Table 7,external comparison,Full Method – Progress/Action,all,illegal_action_rate,5.9,percent,,
+Table 7,external comparison,Full Method – Progress/Action,all,precondition_order_violation_rate,3.8,percent,,
+Figure 3,progress bins,Standard RAG,0-25%,action_validity_rate,82.954545,percent,264,219
+Figure 3,progress bins,Standard RAG,25-50%,action_validity_rate,77.734375,percent,256,199
+Figure 3,progress bins,Standard RAG,50-75%,action_validity_rate,69.918699,percent,246,172
+Figure 3,progress bins,Standard RAG,75-100%,action_validity_rate,58.974359,percent,234,138
+Figure 3,progress bins,ProgPrompt,0-25%,action_validity_rate,92.803030,percent,264,245
+Figure 3,progress bins,ProgPrompt,25-50%,action_validity_rate,90.234375,percent,256,231
+Figure 3,progress bins,ProgPrompt,50-75%,action_validity_rate,86.585366,percent,246,213
+Figure 3,progress bins,ProgPrompt,75-100%,action_validity_rate,79.914530,percent,234,187
+Figure 3,progress bins,ExRAP,0-25%,action_validity_rate,93.560606,percent,264,247
+Figure 3,progress bins,ExRAP,25-50%,action_validity_rate,92.578125,percent,256,237
+Figure 3,progress bins,ExRAP,50-75%,action_validity_rate,90.650407,percent,246,223
+Figure 3,progress bins,ExRAP,75-100%,action_validity_rate,85.897436,percent,234,201
+Figure 3,progress bins,Full Method – Progress/Action,0-25%,action_validity_rate,95.075758,percent,264,251
+Figure 3,progress bins,Full Method – Progress/Action,25-50%,action_validity_rate,94.921875,percent,256,243
+Figure 3,progress bins,Full Method – Progress/Action,50-75%,action_validity_rate,93.902439,percent,246,231
+Figure 3,progress bins,Full Method – Progress/Action,75-100%,action_validity_rate,92.307692,percent,234,216

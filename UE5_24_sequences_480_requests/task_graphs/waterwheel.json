@@ -1,0 +1,200 @@
+{
+  "task_id": "task_waterwheel",
+  "goal": "Complete the waterwheel observation and relate water flow to rotational motion.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_waterwheel",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_axle",
+        "inspect_waterwheel"
+      ],
+      "acceptable_next_actions": [
+        "inspect_waterwheel"
+      ],
+      "preconditions": {
+        "inspect_axle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_waterwheel": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_waterwheel_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_inspect_channel",
+      "predecessors": [
+        "step_01_inspect_waterwheel"
+      ],
+      "allowed_actions": [
+        "inspect_waterwheel",
+        "inspect_channel"
+      ],
+      "acceptable_next_actions": [
+        "inspect_channel"
+      ],
+      "preconditions": {
+        "inspect_waterwheel": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_channel": {
+          "path": "state.inspect_waterwheel_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_channel_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_open_gate",
+      "predecessors": [
+        "step_02_inspect_channel"
+      ],
+      "allowed_actions": [
+        "inspect_gate",
+        "inspect_channel",
+        "open_gate"
+      ],
+      "acceptable_next_actions": [
+        "open_gate"
+      ],
+      "preconditions": {
+        "inspect_gate": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_channel": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "open_gate": {
+          "path": "state.inspect_channel_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.open_gate_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_observe_rotation",
+      "predecessors": [
+        "step_03_open_gate"
+      ],
+      "allowed_actions": [
+        "inspect_axle",
+        "observe_gate",
+        "observe_rotation"
+      ],
+      "acceptable_next_actions": [
+        "observe_rotation"
+      ],
+      "preconditions": {
+        "inspect_axle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_gate": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_rotation": {
+          "path": "state.open_gate_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_rotation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_04"
+      ]
+    },
+    {
+      "node_id": "step_05_observe_water_transfer",
+      "predecessors": [
+        "step_04_observe_rotation"
+      ],
+      "allowed_actions": [
+        "observe_waterwheel",
+        "observe_water_transfer"
+      ],
+      "acceptable_next_actions": [
+        "observe_water_transfer"
+      ],
+      "preconditions": {
+        "observe_waterwheel": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_water_transfer": {
+          "path": "state.observe_rotation_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_water_transfer_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_05"
+      ]
+    },
+    {
+      "node_id": "step_06_complete_observation",
+      "predecessors": [
+        "step_05_observe_water_transfer"
+      ],
+      "allowed_actions": [
+        "review_water_flow",
+        "complete_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_observation"
+      ],
+      "preconditions": {
+        "review_water_flow": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_observation": {
+          "path": "state.observe_water_transfer_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "waterwheel_physics_01",
+        "waterwheel_task_rule_06"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "task_id": "task_windlass",
+  "goal": "Complete the windlass lifting observation and explain how rotation produces lift.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_windlass",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_frame",
+        "inspect_windlass"
+      ],
+      "acceptable_next_actions": [
+        "inspect_windlass"
+      ],
+      "preconditions": {
+        "inspect_frame": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_windlass": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_windlass_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_inspect_rope",
+      "predecessors": [
+        "step_01_inspect_windlass"
+      ],
+      "allowed_actions": [
+        "inspect_windlass",
+        "inspect_rope"
+      ],
+      "acceptable_next_actions": [
+        "inspect_rope"
+      ],
+      "preconditions": {
+        "inspect_windlass": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_rope": {
+          "path": "state.inspect_windlass_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_rope_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_attach_load",
+      "predecessors": [
+        "step_02_inspect_rope"
+      ],
+      "allowed_actions": [
+        "inspect_rope",
+        "inspect_load",
+        "attach_load"
+      ],
+      "acceptable_next_actions": [
+        "attach_load"
+      ],
+      "preconditions": {
+        "inspect_rope": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_load": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "attach_load": {
+          "path": "state.inspect_rope_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.attach_load_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_rotate_handle",
+      "predecessors": [
+        "step_03_attach_load"
+      ],
+      "allowed_actions": [
+        "inspect_handle",
+        "inspect_rope",
+        "rotate_handle"
+      ],
+      "acceptable_next_actions": [
+        "rotate_handle"
+      ],
+      "preconditions": {
+        "inspect_handle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_rope": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "rotate_handle": {
+          "path": "state.attach_load_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.rotate_handle_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_04"
+      ]
+    },
+    {
+      "node_id": "step_05_observe_lift",
+      "predecessors": [
+        "step_04_rotate_handle"
+      ],
+      "allowed_actions": [
+        "inspect_load",
+        "observe_rope",
+        "observe_lift"
+      ],
+      "acceptable_next_actions": [
+        "observe_lift"
+      ],
+      "preconditions": {
+        "inspect_load": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_rope": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_lift": {
+          "path": "state.rotate_handle_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_lift_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_05"
+      ]
+    },
+    {
+      "node_id": "step_06_complete_mechanics_observation",
+      "predecessors": [
+        "step_05_observe_lift"
+      ],
+      "allowed_actions": [
+        "review_mechanism",
+        "complete_mechanics_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_mechanics_observation"
+      ],
+      "preconditions": {
+        "review_mechanism": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_mechanics_observation": {
+          "path": "state.observe_lift_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_mechanics_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "windlass_physics_01",
+        "windlass_task_rule_06"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "task_id": "task_compass",
+  "goal": "Complete the compass observation and explain magnetic-needle alignment.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_compass",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_axis",
+        "inspect_compass"
+      ],
+      "acceptable_next_actions": [
+        "inspect_compass"
+      ],
+      "preconditions": {
+        "inspect_axis": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_compass": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_compass_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "compass_magnetism_01",
+        "compass_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_stabilize_compass_body",
+      "predecessors": [
+        "step_01_inspect_compass"
+      ],
+      "allowed_actions": [
+        "inspect_needle",
+        "check_surface",
+        "stabilize_compass_body"
+      ],
+      "acceptable_next_actions": [
+        "stabilize_compass_body"
+      ],
+      "preconditions": {
+        "inspect_needle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "check_surface": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "stabilize_compass_body": {
+          "path": "state.inspect_compass_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.stabilize_compass_body_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "compass_magnetism_01",
+        "compass_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_observe_needle_alignment",
+      "predecessors": [
+        "step_02_stabilize_compass_body"
+      ],
+      "allowed_actions": [
+        "inspect_axis",
+        "observe_needle",
+        "observe_needle_alignment"
+      ],
+      "acceptable_next_actions": [
+        "observe_needle_alignment"
+      ],
+      "preconditions": {
+        "inspect_axis": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_needle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_needle_alignment": {
+          "path": "state.stabilize_compass_body_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_needle_alignment_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "compass_magnetism_01",
+        "compass_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_complete_observation",
+      "predecessors": [
+        "step_03_observe_needle_alignment"
+      ],
+      "allowed_actions": [
+        "review_magnetism",
+        "complete_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_observation"
+      ],
+      "preconditions": {
+        "review_magnetism": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_observation": {
+          "path": "state.observe_needle_alignment_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "compass_magnetism_01",
+        "compass_task_rule_04"
+      ]
+    }
+  ]
+}

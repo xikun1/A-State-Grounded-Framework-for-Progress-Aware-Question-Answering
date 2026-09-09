@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools==82.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "state-grounded-qa"
+version = "0.1.0"
+description = "State-grounded, progress-aware question answering for interactive 3D environments"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy==2.2.6",
+  "PyYAML==6.0.3",
+  "jsonschema==4.26.0",
+  "matplotlib==3.10.8",
+  "sentence-transformers==6.0.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

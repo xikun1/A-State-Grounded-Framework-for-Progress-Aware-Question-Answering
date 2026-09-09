@@ -1,0 +1,5 @@
+source,state_staleness,current_step_accuracy,next_action_accuracy,action_validity_rate,support_rate,unit
+Table 14,0,83.9,76.2,93.8,92.1,percent
+Table 14,1,77.4,70.6,90.9,87.7,percent
+Table 14,2,68.8,63.1,86.1,81.3,percent
+Table 14,3,58.6,53.4,79.2,72.9,percent

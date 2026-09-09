@@ -1,0 +1,11 @@
+source,track,method,mean_latency_s,p95_latency_s,total_tokens_per_request
+Table 16,EAI–VirtualHome,LLM-only,0.82,1.24,420
+Table 16,EAI–VirtualHome,Standard RAG,1.18,1.86,1120
+Table 16,EAI–VirtualHome,State-only,1.05,1.63,760
+Table 16,EAI–VirtualHome,State-conditioned RAG,1.54,2.37,1460
+Table 16,EAI–VirtualHome,Full Method,1.96,3.08,1820
+Table 16,UE5 Offline Replay,LLM-only,1.06,1.61,460
+Table 16,UE5 Offline Replay,Standard RAG,1.42,2.18,1180
+Table 16,UE5 Offline Replay,State-only,1.31,2.02,810
+Table 16,UE5 Offline Replay,State-conditioned RAG,1.78,2.76,1520
+Table 16,UE5 Offline Replay,Full Method,2.24,3.52,1910

@@ -1,0 +1,5 @@
+source,task_complexity,current_step_accuracy,progress_status_macro_f1,completed_step_f1,remaining_step_f1,legal_action_f1,unit
+Table 5,Short tasks,98.6,97.4,99.1,98.2,96.3,percent
+Table 5,Medium tasks,97.3,95.8,98.2,97.0,94.5,percent
+Table 5,Long tasks,95.7,93.6,96.9,95.1,91.8,percent
+Table 5,Overall,97.2,95.6,98.2,96.9,94.4,percent

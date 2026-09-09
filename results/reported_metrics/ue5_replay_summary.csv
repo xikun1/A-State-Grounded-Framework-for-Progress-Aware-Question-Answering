@@ -1,0 +1,31 @@
+source,section,method,metric,value,unit
+Table 12,state adaptation,Overall,field_completeness_rate,97.8,percent
+Table 12,state adaptation,Overall,state_mapping_error_rate,2.7,percent
+Table 12,state adaptation,Overall,current_step_accuracy,94.6,percent
+Table 12,state adaptation,Overall,progress_status_macro_f1,92.8,percent
+Table 12,state adaptation,Overall,legal_action_set_f1,90.9,percent
+Table 13,offline replay,LLM-only,support_rate,61.8,percent
+Table 13,offline replay,LLM-only,current_step_accuracy,57.3,percent
+Table 13,offline replay,LLM-only,action_validity_rate,64.9,percent
+Table 13,offline replay,LLM-only,illegal_action_rate,35.1,percent
+Table 13,offline replay,LLM-only,end_to_end_latency,1.34,seconds
+Table 13,offline replay,Standard RAG,support_rate,70.6,percent
+Table 13,offline replay,Standard RAG,current_step_accuracy,63.8,percent
+Table 13,offline replay,Standard RAG,action_validity_rate,71.7,percent
+Table 13,offline replay,Standard RAG,illegal_action_rate,28.3,percent
+Table 13,offline replay,Standard RAG,end_to_end_latency,1.58,seconds
+Table 13,offline replay,State-only,support_rate,78.9,percent
+Table 13,offline replay,State-only,current_step_accuracy,76.4,percent
+Table 13,offline replay,State-only,action_validity_rate,82.5,percent
+Table 13,offline replay,State-only,illegal_action_rate,17.5,percent
+Table 13,offline replay,State-only,end_to_end_latency,1.46,seconds
+Table 13,offline replay,State-conditioned RAG,support_rate,87.5,percent
+Table 13,offline replay,State-conditioned RAG,current_step_accuracy,80.7,percent
+Table 13,offline replay,State-conditioned RAG,action_validity_rate,87.6,percent
+Table 13,offline replay,State-conditioned RAG,illegal_action_rate,12.4,percent
+Table 13,offline replay,State-conditioned RAG,end_to_end_latency,1.72,seconds
+Table 13,offline replay,Full Method – Progress/Action,support_rate,91.9,percent
+Table 13,offline replay,Full Method – Progress/Action,current_step_accuracy,83.6,percent
+Table 13,offline replay,Full Method – Progress/Action,action_validity_rate,92.7,percent
+Table 13,offline replay,Full Method – Progress/Action,illegal_action_rate,7.3,percent
+Table 13,offline replay,Full Method – Progress/Action,end_to_end_latency,1.91,seconds

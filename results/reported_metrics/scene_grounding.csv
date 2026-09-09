@@ -1,0 +1,45 @@
+source,method,metric,category,value,unit
+Table 3,LEO,accuracy,overall,62.8,percent
+Table 3,LEO,accuracy,object,71.3,percent
+Table 3,LEO,accuracy,relation,59.7,percent
+Table 3,LEO,accuracy,spatial,57.9,percent
+Table 3,LEO,accuracy,count,66.1,percent
+Table 3,LEO,accuracy,context,58.6,percent
+Table 3,MSR3D,accuracy,overall,69.4,percent
+Table 3,MSR3D,accuracy,object,75.6,percent
+Table 3,MSR3D,accuracy,relation,68.8,percent
+Table 3,MSR3D,accuracy,spatial,66.9,percent
+Table 3,MSR3D,accuracy,count,70.2,percent
+Table 3,MSR3D,accuracy,context,65.5,percent
+Table 3,LLM-only,accuracy,overall,54.7,percent
+Table 3,LLM-only,accuracy,object,67.2,percent
+Table 3,LLM-only,accuracy,relation,48.9,percent
+Table 3,LLM-only,accuracy,spatial,46.5,percent
+Table 3,LLM-only,accuracy,count,57.8,percent
+Table 3,LLM-only,accuracy,context,51.3,percent
+Table 3,Standard RAG,accuracy,overall,59.8,percent
+Table 3,Standard RAG,accuracy,object,70.4,percent
+Table 3,Standard RAG,accuracy,relation,55.6,percent
+Table 3,Standard RAG,accuracy,spatial,53.8,percent
+Table 3,Standard RAG,accuracy,count,61.9,percent
+Table 3,Standard RAG,accuracy,context,56.7,percent
+Table 3,State-conditioned RAG,accuracy,overall,72.6,percent
+Table 3,State-conditioned RAG,accuracy,object,76.8,percent
+Table 3,State-conditioned RAG,accuracy,relation,73.5,percent
+Table 3,State-conditioned RAG,accuracy,spatial,72.9,percent
+Table 3,State-conditioned RAG,accuracy,count,70.8,percent
+Table 3,State-conditioned RAG,accuracy,context,69.1,percent
+Table 3,Full Method – Scene,accuracy,overall,74.3,percent
+Table 3,Full Method – Scene,accuracy,object,77.6,percent
+Table 3,Full Method – Scene,accuracy,relation,75.1,percent
+Table 3,Full Method – Scene,accuracy,spatial,74.2,percent
+Table 3,Full Method – Scene,accuracy,count,71.4,percent
+Table 3,Full Method – Scene,accuracy,context,71.6,percent
+Table 4,LLM-only,scene_support_rate,overall,67.9,percent
+Table 4,LLM-only,scene_hallucination_rate,overall,23.6,percent
+Table 4,Standard RAG,scene_support_rate,overall,74.8,percent
+Table 4,Standard RAG,scene_hallucination_rate,overall,17.9,percent
+Table 4,State-conditioned RAG,scene_support_rate,overall,88.7,percent
+Table 4,State-conditioned RAG,scene_hallucination_rate,overall,8.1,percent
+Table 4,Full Method – Scene,scene_support_rate,overall,93.4,percent
+Table 4,Full Method – Scene,scene_hallucination_rate,overall,4.6,percent

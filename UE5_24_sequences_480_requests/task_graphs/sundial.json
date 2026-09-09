@@ -1,0 +1,174 @@
+{
+  "task_id": "task_sundial",
+  "goal": "Complete the sundial observation and relate the gnomon, light, and shadow position.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_sundial",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_gnomon",
+        "inspect_sundial"
+      ],
+      "acceptable_next_actions": [
+        "inspect_sundial"
+      ],
+      "preconditions": {
+        "inspect_gnomon": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_sundial": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_sundial_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "sundial_optics_01",
+        "sundial_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_align_gnomon",
+      "predecessors": [
+        "step_01_inspect_sundial"
+      ],
+      "allowed_actions": [
+        "inspect_sundial",
+        "check_sunlight",
+        "align_gnomon"
+      ],
+      "acceptable_next_actions": [
+        "align_gnomon"
+      ],
+      "preconditions": {
+        "inspect_sundial": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "check_sunlight": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "align_gnomon": {
+          "path": "state.inspect_sundial_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.align_gnomon_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "sundial_optics_01",
+        "sundial_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_mark_shadow",
+      "predecessors": [
+        "step_02_align_gnomon"
+      ],
+      "allowed_actions": [
+        "inspect_shadow",
+        "check_gnomon",
+        "mark_shadow"
+      ],
+      "acceptable_next_actions": [
+        "mark_shadow"
+      ],
+      "preconditions": {
+        "inspect_shadow": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "check_gnomon": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "mark_shadow": {
+          "path": "state.align_gnomon_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.mark_shadow_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "sundial_optics_01",
+        "sundial_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_compare_shadow_position",
+      "predecessors": [
+        "step_03_mark_shadow"
+      ],
+      "allowed_actions": [
+        "review_marker",
+        "inspect_gnomon",
+        "compare_shadow_position"
+      ],
+      "acceptable_next_actions": [
+        "compare_shadow_position"
+      ],
+      "preconditions": {
+        "review_marker": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_gnomon": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "compare_shadow_position": {
+          "path": "state.mark_shadow_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.compare_shadow_position_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "sundial_optics_01",
+        "sundial_task_rule_04"
+      ]
+    },
+    {
+      "node_id": "step_05_complete_observation",
+      "predecessors": [
+        "step_04_compare_shadow_position"
+      ],
+      "allowed_actions": [
+        "review_sundial",
+        "complete_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_observation"
+      ],
+      "preconditions": {
+        "review_sundial": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_observation": {
+          "path": "state.compare_shadow_position_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "sundial_optics_01",
+        "sundial_task_rule_05"
+      ]
+    }
+  ]
+}

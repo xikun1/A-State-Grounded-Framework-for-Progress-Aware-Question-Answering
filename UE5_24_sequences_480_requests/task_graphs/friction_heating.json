@@ -1,0 +1,174 @@
+{
+  "task_id": "task_friction_heating",
+  "goal": "Complete the friction-heating observation and relate motion to thermal energy.",
+  "nodes": [
+    {
+      "node_id": "step_01_inspect_wooden_apparatus",
+      "predecessors": [],
+      "allowed_actions": [
+        "inspect_spindle",
+        "inspect_wooden_apparatus"
+      ],
+      "acceptable_next_actions": [
+        "inspect_wooden_apparatus"
+      ],
+      "preconditions": {
+        "inspect_spindle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_wooden_apparatus": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.inspect_wooden_apparatus_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "friction_thermal_01",
+        "friction_heating_task_rule_01"
+      ]
+    },
+    {
+      "node_id": "step_02_position_spindle",
+      "predecessors": [
+        "step_01_inspect_wooden_apparatus"
+      ],
+      "allowed_actions": [
+        "inspect_friction_point",
+        "inspect_base",
+        "position_spindle"
+      ],
+      "acceptable_next_actions": [
+        "position_spindle"
+      ],
+      "preconditions": {
+        "inspect_friction_point": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_base": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "position_spindle": {
+          "path": "state.inspect_wooden_apparatus_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.position_spindle_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "friction_thermal_01",
+        "friction_heating_task_rule_02"
+      ]
+    },
+    {
+      "node_id": "step_03_rotate_spindle",
+      "predecessors": [
+        "step_02_position_spindle"
+      ],
+      "allowed_actions": [
+        "check_contact",
+        "inspect_spindle",
+        "rotate_spindle"
+      ],
+      "acceptable_next_actions": [
+        "rotate_spindle"
+      ],
+      "preconditions": {
+        "check_contact": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "inspect_spindle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "rotate_spindle": {
+          "path": "state.position_spindle_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.rotate_spindle_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "friction_thermal_01",
+        "friction_heating_task_rule_03"
+      ]
+    },
+    {
+      "node_id": "step_04_observe_heat",
+      "predecessors": [
+        "step_03_rotate_spindle"
+      ],
+      "allowed_actions": [
+        "inspect_base",
+        "observe_spindle",
+        "observe_heat"
+      ],
+      "acceptable_next_actions": [
+        "observe_heat"
+      ],
+      "preconditions": {
+        "inspect_base": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_spindle": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "observe_heat": {
+          "path": "state.rotate_spindle_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.observe_heat_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "friction_thermal_01",
+        "friction_heating_task_rule_04"
+      ]
+    },
+    {
+      "node_id": "step_05_complete_observation",
+      "predecessors": [
+        "step_04_observe_heat"
+      ],
+      "allowed_actions": [
+        "review_heat_transfer",
+        "complete_observation"
+      ],
+      "acceptable_next_actions": [
+        "complete_observation"
+      ],
+      "preconditions": {
+        "review_heat_transfer": {
+          "path": "state.exhibit_accessible",
+          "equals": true
+        },
+        "complete_observation": {
+          "path": "state.observe_heat_completed",
+          "equals": true
+        }
+      },
+      "completion_rule": {
+        "path": "events.complete_observation_completed",
+        "truthy": true
+      },
+      "evidence_ids": [
+        "friction_thermal_01",
+        "friction_heating_task_rule_05"
+      ]
+    }
+  ]
+}
