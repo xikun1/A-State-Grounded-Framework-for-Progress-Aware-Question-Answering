@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normalized UE5 request record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sequence_id",
+    "request_id",
+    "timestamp",
+    "scene",
+    "task",
+    "action",
+    "event",
+    "dialogue",
+    "runtime_state",
+    "question"
+  ],
+  "properties": {
+    "sequence_id": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "minLength": 1},
+    "timestamp": {"type": ["string", "number", "null"]},
+    "scene": {"type": "object"},
+    "task": {"type": "object"},
+    "action": {"type": "object"},
+    "event": {"type": ["object", "array", "string", "null"]},
+    "dialogue": {"type": "object"},
+    "runtime_state": {"type": "object"},
+    "question": {"type": ["string", "null"]}
+  }
+}

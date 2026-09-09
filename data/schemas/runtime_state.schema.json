@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/state-grounded-qa/runtime_state.schema.json",
+  "title": "Runtime state S_t",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scene", "task", "action", "dialogue", "metadata"],
+  "properties": {
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scene_id", "location", "active_object", "object_relations", "objects"],
+      "properties": {
+        "scene_id": {"type": ["string", "null"]},
+        "location": {"type": ["string", "null"]},
+        "active_object": {"type": ["string", "null"]},
+        "object_relations": {"type": "array", "items": {"type": "object"}},
+        "objects": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["goal", "current_step", "progress_status", "completed_steps", "remaining_steps", "milestone_progress"],
+      "properties": {
+        "goal": {"type": ["string", "null"]},
+        "current_step": {"type": ["string", "null"]},
+        "progress_status": {"enum": ["not_started", "in_progress", "completed", null]},
+        "completed_steps": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "remaining_steps": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "milestone_progress": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available_actions", "preconditions", "last_action", "acceptable_next_actions"],
+      "properties": {
+        "available_actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "preconditions": {"type": "object"},
+        "last_action": {"type": ["string", "null"]},
+        "acceptable_next_actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "dialogue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dialogue_history", "unresolved_issue"],
+      "properties": {
+        "dialogue_history": {"type": "array", "items": {"type": "object"}},
+        "unresolved_issue": {"type": ["string", "null"]}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "timestamp", "event_index", "source_adapter"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "timestamp": {"type": ["string", "number", "null"]},
+        "event_index": {"type": ["integer", "null"], "minimum": 0},
+        "source_adapter": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

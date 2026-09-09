@@ -1,0 +1,46 @@
+field_mapping:
+  sequence_id: sequence.sequence_id
+  request_id: request.request_id
+  snapshot_id: request.snapshot_id
+  timestamp: telemetry.timestamp
+  question: request.question
+  dialogue_history: dialogue.history
+  unresolved_issue: dialogue.unresolved_issue
+
+scene_mapping:
+  scene_id: scene_records.scene_id
+  location: scene_records.location
+  active_object: scene_records.active_object
+  objects: object_records
+  object_relations: scene_records.object_relations
+
+task_mapping:
+  goal: task_state.goal
+  current_step: task_state.current_step
+  progress_status: task_state.progress_status
+  completed_steps: task_state.completed_steps
+  remaining_steps: task_state.remaining_steps
+  milestone_progress: milestone_state.progress
+
+action_mapping:
+  available_actions: action_records.available_actions
+  acceptable_next_actions: action_records.acceptable_next_actions
+  preconditions: action_records.preconditions
+  last_action: action_records.last_action
+
+event_mapping:
+  event_index: environment_events.event_index
+  current_event: environment_events.current_event
+  environment_events: environment_events.history
+
+identifier_rules:
+  lowercase: true
+  trim_whitespace: true
+  replace_non_identifier_characters: _
+  preserve_characters: ".:-"
+
+missing_value_policy:
+  accepted_source_values: [null, "", "N/A", "not_applicable"]
+  canonical: null
+  list_default: []
+  mapping_default: {}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/state-grounded-qa/task_graph.schema.json",
+  "title": "Task graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "goal", "nodes"],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "goal": {"type": "string", "minLength": 1},
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/task_node"}
+    }
+  },
+  "$defs": {
+    "task_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "predecessors",
+        "allowed_actions",
+        "preconditions",
+        "completion_rule",
+        "evidence_ids"
+      ],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1},
+        "predecessors": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "allowed_actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "acceptable_next_actions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "preconditions": {"type": "object", "additionalProperties": {"$ref": "#/$defs/predicate"}},
+        "completion_rule": {"anyOf": [{"$ref": "#/$defs/predicate"}, {"type": "null"}]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "active_if": {"anyOf": [{"$ref": "#/$defs/predicate"}, {"type": "null"}]}
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "required": ["path"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "equals": {},
+        "in": {"type": "array"},
+        "exists": {"type": "boolean"},
+        "truthy": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

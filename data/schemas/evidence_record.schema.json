@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/state-grounded-qa/evidence_record.schema.json",
+  "title": "Evidence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_id",
+    "text",
+    "source",
+    "scene_constraints",
+    "task_step_constraints",
+    "applicability_metadata"
+  ],
+  "properties": {
+    "evidence_id": {"type": "string", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "minLength": 1},
+    "scene_constraints": {
+      "type": "object",
+      "properties": {
+        "scene_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "locations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "entity_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": true
+    },
+    "task_step_constraints": {
+      "type": "object",
+      "properties": {
+        "step_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "progress_statuses": {
+          "type": "array",
+          "items": {"enum": ["not_started", "in_progress", "completed"]},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "applicability_metadata": {"type": "object", "additionalProperties": true}
+  }
+}

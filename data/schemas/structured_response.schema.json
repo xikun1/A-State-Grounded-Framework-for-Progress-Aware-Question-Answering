@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/state-grounded-qa/structured_response.schema.json",
+  "title": "Structured response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "answer",
+    "evidence_ids",
+    "scene_refs",
+    "current_step_id",
+    "progress_status",
+    "remaining_step_ids",
+    "next_action_id"
+  ],
+  "properties": {
+    "answer": {"type": "string"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "scene_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_ids", "locations", "relation_triples"],
+      "properties": {
+        "entity_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "locations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "relation_triples": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [{"type": "string"}, {"type": "string"}, {"type": "string"}],
+            "minItems": 3,
+            "maxItems": 3
+          }
+        }
+      }
+    },
+    "current_step_id": {"type": ["string", "null"]},
+    "progress_status": {"enum": ["not_started", "in_progress", "completed", null]},
+    "remaining_step_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "next_action_id": {"type": ["string", "null"]}
+  }
+}
