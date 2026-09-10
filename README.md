@@ -98,10 +98,6 @@ python plotting/plot_fig6.py
 
 The controlled profiling configuration reported in the paper used an NVIDIA RTX 3090 24 GB, a 16-core CPU, 64 GB RAM, and batch size 1. The implementation does not require identical hardware.
 
-## Reported results
-
-`results/reported_metrics/` contains reported aggregate metrics used for table/figure generation. These CSV files are not raw per-request results. Evaluation scripts require explicit inputs and write newly computed outputs to paths selected by the user.
-
 ## Data availability
 
 Third-party datasets remain subject to their respective release and license terms and are not redistributed in this repository. The author-verified normalized UE5 replay records used in the reported offline replay evaluation are included under `UE5_24_sequences_480_requests/`. UE5 project files, 3D assets, textures, audio, Marketplace assets, and executables remain outside the scope of this research-code release.
