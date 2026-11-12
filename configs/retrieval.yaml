@@ -1,7 +1,14 @@
 embedding:
   model_name: BAAI/bge-m3
+  normalize_embeddings: true
 
+backend: faiss
+index_type: IndexFlatIP
+search: exact
 top_k: 5
 max_chunk_tokens: 256
-reranker: false
 similarity: cosine
+tokenizer:
+  model_name: Qwen/Qwen2.5-7B-Instruct
+  add_special_tokens: false
+reranker: false
