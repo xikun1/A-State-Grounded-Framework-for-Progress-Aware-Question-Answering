@@ -132,41 +132,126 @@ def chi_scene(candidate: Mapping[str, Any], state: RuntimeState) -> tuple[bool, 
 def chi_progress(
     candidate: Mapping[str, Any], state: RuntimeState, task_graph: TaskGraph | None = None
 ) -> tuple[bool, list[str]]:
-    """Check current step, status, remaining order, prerequisites, and duplicates."""
+    """Check structural progress consistency against the authoritative state.
+
+    The response does not have to reproduce every progress field in ``S_t``.
+    It must, however, describe a possible point on the active task route.  The
+    runtime completed steps are treated as confirmed facts; graph membership,
+    prerequisite order, completion semantics, and duplicate-step checks remain
+    deterministic.
+    """
 
     labels: list[str] = []
     remaining = list(candidate["remaining_step_ids"])
-    combined = state.task.completed_steps + remaining
+    completed = list(state.task.completed_steps)
+    confirmed_completed = set(completed)
+
+    # Without a graph, the normalized runtime state is the only available
+    # description of the active route.  With a graph, retain the runtime route
+    # as well as the graph-derived route because active_if predicates may refer
+    # to source fields that are intentionally not copied into RuntimeState.
+    state_route = list(completed)
+    if state.task.current_step is not None:
+        state_route.append(state.task.current_step)
+    state_route.extend(state.task.remaining_steps)
+    if task_graph is None:
+        active_route = list(dict.fromkeys(state_route))
+    else:
+        graph_route = task_graph.active_order(state.to_dict())
+        # RuntimeState already records the selected branch's current and
+        # remaining nodes.  Do not force graph nodes guarded by an unresolved
+        # active_if predicate into that route merely because they are present
+        # in the graph.
+        graph_route = [
+            node_id
+            for node_id in graph_route
+            if task_graph.nodes[node_id].active_if is None or node_id in state_route
+        ]
+        active_route = list(dict.fromkeys(graph_route + state_route))
+    active_steps = set(active_route)
+    route_position = {step_id: index for index, step_id in enumerate(active_route)}
+
+    runtime_completed = state.task.progress_status == "completed"
+    if active_route and active_steps.issubset(confirmed_completed):
+        runtime_completed = True
+
+    combined = completed + remaining
     if len(remaining) != len(set(remaining)) or len(combined) != len(set(combined)):
         labels.append("duplicate_step")
-    if candidate["current_step_id"] in remaining or candidate["current_step_id"] in state.task.completed_steps:
+    current = candidate["current_step_id"]
+    if current in remaining or current in confirmed_completed:
         labels.append("duplicate_step")
-    if (
-        candidate["current_step_id"] != state.task.current_step
-        or candidate["progress_status"] != state.task.progress_status
-        or remaining != state.task.remaining_steps
-    ):
+    if current is not None and current not in active_steps:
         labels.append("progress_mismatch")
+        labels.append("order_violation")
+    unknown_remaining = any(step_id not in active_steps for step_id in remaining)
+    if unknown_remaining:
+        labels.append("progress_mismatch")
+        labels.append("order_violation")
+
+    # An unfinished runtime task with a known active step cannot be represented
+    # by an empty current step.  This closes the otherwise ambiguous
+    # ``current=None, remaining=[]`` case without restoring equality checks for
+    # otherwise non-authoritative fields.
+    if not runtime_completed and state.task.current_step is not None and current is None:
+        labels.append("progress_mismatch")
+
+    # Every active node after the candidate current step is a necessary future
+    # step for the selected route.  The candidate may contain additional
+    # structurally valid information, but may not silently omit this suffix.
+    if not runtime_completed and current is not None and current in route_position:
+        required_remaining = {
+            step_id
+            for step_id in active_route[route_position[current] + 1 :]
+            if step_id not in confirmed_completed
+        }
+        if not required_remaining.issubset(set(remaining)):
+            labels.append("progress_mismatch")
+
+    # A completed response is only valid when the environment has confirmed
+    # completion.  Conversely, a non-completed status cannot contradict a
+    # confirmed completed runtime task.  ``None`` remains an unspecified value
+    # and is therefore not forced to equal the runtime status.
     if candidate["progress_status"] == "completed" and (
-        candidate["current_step_id"] is not None or remaining
+        current is not None or remaining or not runtime_completed
     ):
         labels.append("progress_mismatch")
+    if runtime_completed and (current is not None or remaining):
+        labels.append("progress_mismatch")
+    if runtime_completed and candidate["progress_status"] not in {None, "completed"}:
+        labels.append("progress_mismatch")
+    if candidate["progress_status"] == "not_started" and confirmed_completed:
+        labels.append("progress_mismatch")
+
     if task_graph is not None:
-        expected_order = [
-            node_id
-            for node_id in task_graph.topological_order
-            if node_id in remaining
-        ]
-        if remaining != expected_order:
+        if any(
+            route_position[left] >= route_position[right]
+            for left, right in zip(remaining, remaining[1:])
+            if left in route_position and right in route_position
+        ):
             labels.append("order_violation")
-        prior = set(state.task.completed_steps)
-        if candidate["current_step_id"] is not None:
-            node = task_graph.nodes.get(candidate["current_step_id"])
-            active_nodes = prior | set(remaining) | {candidate["current_step_id"]}
-            if node is None or any(
-                pred in active_nodes and pred not in prior for pred in node.predecessors
-            ):
+        prior = set(confirmed_completed)
+        if current is not None:
+            node = task_graph.nodes.get(current)
+            if node is not None:
+                active_predecessors = [pred for pred in node.predecessors if pred in active_steps]
+                if any(pred not in prior for pred in active_predecessors):
+                    labels.append("order_violation")
+            prior.add(current)
+        for step_id in remaining:
+            node = task_graph.nodes.get(step_id)
+            if node is None:
+                continue
+            active_predecessors = [pred for pred in node.predecessors if pred in active_steps]
+            if any(pred not in prior for pred in active_predecessors):
                 labels.append("order_violation")
+            prior.add(step_id)
+    elif any(
+        route_position[left] >= route_position[right]
+        for left, right in zip(remaining, remaining[1:])
+        if left in route_position and right in route_position
+    ):
+        labels.append("order_violation")
     unique_labels = list(dict.fromkeys(labels))
     return not unique_labels, unique_labels
 

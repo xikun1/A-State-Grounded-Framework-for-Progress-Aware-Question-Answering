@@ -1,0 +1,2 @@
+{"request_id":"timing_offline_1","evaluation_protocol":"ue5_offline_replay_evaluation","evaluation_subset":"fixture","timing_scope":"end_to_end","execution_config":{"batch_size":1},"latency_s":1.0,"stage_latency_s":{"generation":0.6,"verification":0.1},"tokens":100}
+{"request_id":"timing_online_1","evaluation_protocol":"end_to_end_computational_cost_evaluation","evaluation_subset":"fixture","timing_scope":"end_to_end","execution_config":{"batch_size":1},"latency_s":2.0,"stage_latency_s":{"generation":1.2,"verification":0.1},"tokens":120}

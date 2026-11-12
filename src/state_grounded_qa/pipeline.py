@@ -38,6 +38,7 @@ class PipelineResult:
     retrieved_evidence: list[EvidenceRecord]
     retry_count: int
     used_fallback: bool
+    initial_verification: VerificationResult | None = None
 
 
 class StateGroundedPipeline:
@@ -81,17 +82,23 @@ class StateGroundedPipeline:
         first_verification = verify_response(first, state, evidence, self.task_graph)
         if first_verification.accepted:
             response = parse_structured_output(first)
-            result = PipelineResult(response, first_verification, evidence, 0, False)
+            result = PipelineResult(
+                response, first_verification, evidence, 0, False, first_verification
+            )
         else:
             second = self.generator.generate(serialized, verifier_feedback=first_verification.failure_labels)
             second_verification = verify_response(second, state, evidence, self.task_graph)
             if second_verification.accepted:
                 response = parse_structured_output(second)
-                result = PipelineResult(response, second_verification, evidence, 1, False)
+                result = PipelineResult(
+                    response, second_verification, evidence, 1, False, first_verification
+                )
             else:
                 fallback = ConservativeFallback(state)
                 fallback_verification = verify_response(fallback, state, evidence, self.task_graph)
-                result = PipelineResult(fallback, fallback_verification, evidence, 1, True)
+                result = PipelineResult(
+                    fallback, fallback_verification, evidence, 1, True, first_verification
+                )
 
         if state.to_dict() != state_before:
             raise RuntimeError("Pipeline components modified authoritative runtime state")

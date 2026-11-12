@@ -16,6 +16,7 @@ from state_grounded_qa.schemas import (
     RuntimeState,
     SceneState,
     StateMetadata,
+    StructuredResponse,
     TaskState,
 )
 from state_grounded_qa.state_adapter import StateAdapter
@@ -60,6 +61,27 @@ class RejectingGenerator:
         return {"answer": "unstructured"}
 
 
+class RetryThenValidGenerator:
+    def __init__(self) -> None:
+        self.calls = 0
+        self.feedback: list[Sequence[str] | None] = []
+
+    def generate(self, serialized_input: str, verifier_feedback: Sequence[str] | None = None) -> dict[str, Any]:
+        self.calls += 1
+        self.feedback.append(verifier_feedback)
+        if self.calls == 1:
+            return {"answer": "unstructured"}
+        return StructuredResponse(
+            answer="Inspect the lever.",
+            evidence_ids=["e1"],
+            scene_refs={"entity_ids": ["lever"], "locations": ["north"], "relation_triples": []},
+            current_step_id="step_1",
+            progress_status="in_progress",
+            remaining_step_ids=["step_2"],
+            next_action_id="inspect",
+        ).to_dict()
+
+
 def test_fallback_is_non_executing_and_does_not_modify_state() -> None:
     state = runtime_state()
     before = copy.deepcopy(state.to_dict())
@@ -84,3 +106,21 @@ def test_retry_and_fallback_reuse_state_without_modification() -> None:
     assert result.used_fallback
     assert result.response.next_action_id is None
     assert state.to_dict() == before
+
+
+def test_retry_success_is_executed_once_and_records_initial_failure() -> None:
+    generator = RetryThenValidGenerator()
+    pipeline = StateGroundedPipeline(
+        adapter=FixedAdapter(runtime_state()),
+        task_graph=None,
+        knowledge_base=[EvidenceRecord("e1", "Inspect the lever.", "fixture")],
+        embedder=FixedEmbedder(),
+        generator=generator,
+    )
+    result = pipeline.run({}, "What next?")
+    assert generator.calls == 2
+    assert result.retry_count == 1
+    assert not result.used_fallback
+    assert result.initial_verification is not None
+    assert not result.initial_verification.accepted
+    assert result.verification.accepted
