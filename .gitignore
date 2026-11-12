@@ -1,0 +1,47 @@
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Local environments and configuration
+.venv/
+venv/
+env/
+.env
+.env.*
+*.local
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+.DS_Store
+Thumbs.db
+
+# User-selected/generated evaluation directories (do not ignore research CSV/JSON/JSONL globally)
+/evaluation_outputs/
+/outputs/
+/generated_outputs/
+/results/
+/figures/
+/plots/
+/tmp/
+/temp/
+
+# Generated media artifacts
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.webp
+*.gif
+*.pdf
+*.mp4
+*.mov
+*.avi
