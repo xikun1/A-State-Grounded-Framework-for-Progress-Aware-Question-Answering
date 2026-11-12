@@ -82,6 +82,15 @@ class RetryThenValidGenerator:
         ).to_dict()
 
 
+class CountingTokenCounter:
+    def __init__(self) -> None:
+        self.texts: list[str] = []
+
+    def count_tokens(self, text: str) -> int:
+        self.texts.append(text)
+        return len(text.split())
+
+
 def test_fallback_is_non_executing_and_does_not_modify_state() -> None:
     state = runtime_state()
     before = copy.deepcopy(state.to_dict())
@@ -94,17 +103,20 @@ def test_retry_and_fallback_reuse_state_without_modification() -> None:
     state = runtime_state()
     before = copy.deepcopy(state.to_dict())
     generator = RejectingGenerator()
+    token_counter = CountingTokenCounter()
     pipeline = StateGroundedPipeline(
         adapter=FixedAdapter(state),
         task_graph=None,
         knowledge_base=[EvidenceRecord("e1", "Inspect the lever.", "fixture")],
         embedder=FixedEmbedder(),
         generator=generator,
+        token_counter=token_counter,
     )
     result = pipeline.run({}, "What next?")
     assert generator.calls == 2
     assert result.used_fallback
     assert result.response.next_action_id is None
+    assert token_counter.texts == ["Inspect the lever."]
     assert state.to_dict() == before
 
 
@@ -116,6 +128,7 @@ def test_retry_success_is_executed_once_and_records_initial_failure() -> None:
         knowledge_base=[EvidenceRecord("e1", "Inspect the lever.", "fixture")],
         embedder=FixedEmbedder(),
         generator=generator,
+        token_counter=lambda text: len(text.split()),
     )
     result = pipeline.run({}, "What next?")
     assert generator.calls == 2
