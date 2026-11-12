@@ -10,6 +10,8 @@ from .fallback import ConservativeFallback
 from .progress import TaskGraph
 from .retrieval import (
     EmbeddingBackend,
+    QwenTokenizerTokenCounter,
+    TokenCounter,
     compose_query,
     filter_evidence,
     rank_evidence,
@@ -54,6 +56,7 @@ class StateGroundedPipeline:
         top_k: int = 5,
         max_chunk_tokens: int = 256,
         max_retry: int = 1,
+        token_counter: TokenCounter | Any | None = None,
     ) -> None:
         if max_retry != 1:
             raise ValueError("The method permits exactly one maximum retry")
@@ -65,6 +68,7 @@ class StateGroundedPipeline:
         self.top_k = top_k
         self.max_chunk_tokens = max_chunk_tokens
         self.max_retry = max_retry
+        self.token_counter = token_counter if token_counter is not None else QwenTokenizerTokenCounter()
 
     def run(self, raw_record: Mapping[str, Any], question: str) -> PipelineResult:
         """Build S_t, retrieve E_t once, then generate, verify, retry, or fall back."""
@@ -72,8 +76,7 @@ class StateGroundedPipeline:
         state = self.adapter.build_state(raw_record)
         state_before = copy.deepcopy(state.to_dict())
         candidates = filter_evidence(self.knowledge_base, state, state.task.goal)
-        if hasattr(self.embedder, "count_tokens"):
-            validate_chunk_lengths(candidates, self.embedder, self.max_chunk_tokens)
+        validate_chunk_lengths(candidates, self.token_counter, self.max_chunk_tokens)
         query = compose_query(question, state)
         evidence = select_top_k(rank_evidence(query, candidates, self.embedder), self.top_k)
         serialized = serialize_input(question, state, evidence)

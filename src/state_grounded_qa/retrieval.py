@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any, Mapping, Protocol, Sequence
 
+import faiss
 import numpy as np
 
 from .schemas import EvidenceRecord, RuntimeState
@@ -15,6 +17,13 @@ class EmbeddingBackend(Protocol):
 
     def encode(self, texts: Sequence[str]) -> np.ndarray:
         """Return a two-dimensional float array, one row per text."""
+
+
+class TokenCounter(Protocol):
+    """Interface for counting tokens independently of the embedding model."""
+
+    def count_tokens(self, text: str) -> int:
+        """Return the number of tokenizer tokens without added special tokens."""
 
 
 class SentenceTransformerBackend:
@@ -41,11 +50,26 @@ class SentenceTransformerBackend:
             dtype=np.float32,
         )
 
-    def count_tokens(self, text: str) -> int:
-        """Count model tokens for enforcing the configured evidence chunk limit."""
 
-        model = self._load()
-        return len(model.tokenizer.encode(text, add_special_tokens=True))
+
+@lru_cache(maxsize=4)
+def _load_tokenizer(model_name: str) -> Any:
+    """Load a tokenizer once, only when evidence length validation is used."""
+
+    from transformers import AutoTokenizer
+
+    return AutoTokenizer.from_pretrained(model_name)
+
+
+class QwenTokenizerTokenCounter:
+    """Count evidence tokens with the paper-specified Qwen2.5 tokenizer."""
+
+    def __init__(self, model_name: str = "Qwen/Qwen2.5-7B-Instruct") -> None:
+        self.model_name = model_name
+
+    def count_tokens(self, text: str) -> int:
+        tokenizer = _load_tokenizer(self.model_name)
+        return len(tokenizer.encode(text, add_special_tokens=False))
 
 
 @dataclass(slots=True)
@@ -135,18 +159,58 @@ def compose_query(question: str, state: RuntimeState) -> str:
 def rank_evidence(
     query: str, candidates: Sequence[EvidenceRecord], backend: EmbeddingBackend
 ) -> list[RankedEvidence]:
-    """Rank candidates using cosine similarity / normalized inner product."""
+    """Rank candidates with exact FAISS cosine-similarity search.
+
+    Candidates are expected to have already passed ``filter_evidence``. FAISS
+    is used only for exact vector search; records and their metadata are
+    returned unchanged.
+    """
 
     if not candidates:
         return []
-    embeddings = np.asarray(backend.encode([query] + [item.text for item in candidates]), dtype=float)
+    embeddings = np.asarray(
+        backend.encode([query] + [item.text for item in candidates]), dtype=np.float32
+    )
     if embeddings.ndim != 2 or embeddings.shape[0] != len(candidates) + 1:
         raise ValueError("Embedding backend returned an unexpected shape")
-    norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
-    normalized = embeddings / np.clip(norms, 1e-12, None)
-    scores = normalized[1:] @ normalized[0]
-    ranked = [RankedEvidence(record=record, score=float(score)) for record, score in zip(candidates, scores)]
-    return sorted(ranked, key=lambda item: (-item.score, item.record.evidence_id))
+    if embeddings.shape[1] < 1:
+        raise ValueError("Embedding backend returned zero-dimensional vectors")
+
+    query_vector = np.ascontiguousarray(embeddings[:1], dtype=np.float32)
+    candidate_vectors = np.ascontiguousarray(embeddings[1:], dtype=np.float32)
+    faiss.normalize_L2(query_vector)
+    faiss.normalize_L2(candidate_vectors)
+
+    index = faiss.IndexFlatIP(candidate_vectors.shape[1])
+    index.add(candidate_vectors)
+    scores, indices = index.search(query_vector, len(candidates))
+    ranked_with_positions = [
+        (int(index), RankedEvidence(record=candidates[int(index)], score=float(score)))
+        for score, index in zip(scores[0], indices[0])
+        if int(index) >= 0
+    ]
+    return [
+        item
+        for _, item in sorted(
+            ranked_with_positions,
+            key=lambda pair: (
+                -pair[1].score,
+                pair[1].record.evidence_id,
+                pair[0],
+            ),
+        )
+    ]
+
+
+def _count_tokens(token_counter: Any, text: str) -> int:
+    """Support both the public counter object and simple test callables."""
+
+    method = getattr(token_counter, "count_tokens", None)
+    if callable(method):
+        return int(method(text))
+    if callable(token_counter):
+        return int(token_counter(text))
+    raise TypeError("token_counter must provide count_tokens(text) or be callable")
 
 
 def validate_chunk_lengths(
@@ -157,7 +221,7 @@ def validate_chunk_lengths(
     if max_chunk_tokens < 1:
         raise ValueError("max_chunk_tokens must be positive")
     for record in records:
-        length = int(token_counter.count_tokens(record.text))
+        length = _count_tokens(token_counter, record.text)
         if length > max_chunk_tokens:
             raise ValueError(
                 f"Evidence {record.evidence_id!r} has {length} tokens; limit is {max_chunk_tokens}"
