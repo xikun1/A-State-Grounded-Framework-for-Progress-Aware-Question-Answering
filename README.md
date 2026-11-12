@@ -40,7 +40,9 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-The sentence-transformer backend loads `BAAI/bge-m3` only when embedding is requested.
+The sentence-transformer backend loads `BAAI/bge-m3` only when embedding is requested. Retrieval applies state applicability filtering first, then uses FAISS `IndexFlatIP` exact search over L2-normalized float32 vectors, so inner products are cosine similarities. Top-k is 5 and reranking is disabled.
+
+Evidence chunk lengths are counted independently with `Qwen/Qwen2.5-7B-Instruct` using `add_special_tokens=False` and are limited to 256 tokens. The tokenizer is loaded lazily and `StateGroundedPipeline(..., token_counter=...)` accepts an injected counter for offline tests.
 
 ## Data and adapters
 
